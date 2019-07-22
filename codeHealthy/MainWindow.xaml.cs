@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Timers;
@@ -14,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using WPFCustomMessageBox;
+
 
 namespace codeHealthy
 {
@@ -38,13 +40,47 @@ namespace codeHealthy
 
         }
 
+        protected override void OnStateChanged(EventArgs e)
+        {
+            System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+
+            notifyIcon.DoubleClick += _notifyIcon_DoubleClick;
+
+            if (WindowState.Minimized == this.WindowState)
+            {
+                notifyIcon.Visible = true;
+                notifyIcon.Icon = SystemIcons.Application;
+                notifyIcon.BalloonTipText = "Radek app";
+                notifyIcon.BalloonTipTitle = "Welcome Message";
+                notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+                notifyIcon.ShowBalloonTip(3000);
+                this.ShowInTaskbar = false;
+            }
+            else if (WindowState.Normal == this.WindowState)
+            {
+                this.WindowState = WindowState.Normal;
+                this.ShowInTaskbar = true;
+                notifyIcon.Visible = false;
+            }
+
+            base.OnStateChanged(e);
+        }
+
+        void _notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            System.Windows.Forms.NotifyIcon notifyIcon = (System.Windows.Forms.NotifyIcon)sender;
+            notifyIcon.Visible = false;
+            this.ShowInTaskbar = true;
+
+        }
+
         void timer_Tick(object sender, EventArgs e)
         {
             Display.Text = "Score: " + score.ToString();
 
-            //DateTime.Now.Minute=
+            //DateTime.Now.Minute = 
 
-            goodMorning();
+            //goodMorning();
 
         }
 
