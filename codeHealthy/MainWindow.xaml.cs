@@ -17,39 +17,6 @@ using WPFCustomMessageBox;
 
 namespace codeHealthy
 {
-    public class MessageBoxHelper
-    {
-        string message;
-        string caption;
-        MessageBoxButton button;
-        MessageBoxImage image;
-        int score;
-        public MessageBoxHelper(string message, string caption, MessageBoxButton button, MessageBoxImage image, int score)
-        {
-            this.message = message;
-            this.caption = caption;
-            this.button = button;
-            this.image = image;
-            this.score = score;
-
-        }
-        public int DisplayMessageBox()
-        {
-            MessageBoxResult result = MessageBox.Show(message, caption, button, image);
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Cool! Just did that.", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    MessageBox.Show("I don't care", "CodeHealthy");
-                    score -= 1;
-                    break;
-            }
-            return score;
-        }
-    }
 
     public partial class MainWindow : Window
     {
@@ -57,69 +24,40 @@ namespace codeHealthy
         {
             InitializeComponent();
             var score = 0;
-            MessageBox.Show("Good Morning", "CodeHealthy", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-            /*
-            MessageBoxResult result1 = MessageBox.Show("Please wipe off your screen, keyboard and mouse.", "CodeHealthy", MessageBoxButton.YesNo);
-            switch (result1)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Yep", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    MessageBox.Show("I don't care", "CodeHealthy");
-                    score -= 1;
-                    break;
-            }
-            */
+            //CustomMessageBox.Show("Good Morning", "CodeHealthy");
+           
 
+            int CountScore(MessageBoxResult result, int currScore)
+            {
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        currScore += 1;
+                        break;
+                    case MessageBoxResult.No:
+                        currScore -= 1;
+                        break;
+                }
+                return score;
+            }
             //MessageBoxResult result1 = CustomMessageBox.ShowYesNo("Please wipe off your screen, keyboard and mouse.", "CodeHealthy", MessageBoxButton.YesNo);
-            MessageBoxResult result1 = CustomMessageBox.ShowYesNo("Please wipe off your screen, keyboard and mouse.", "CodeHealthy", "Cool! I just did that.", "I don't care.");
-            switch (result1)
+            MessageBoxResult result1 = CustomMessageBox.ShowYesNo("\t\t\tGood Morning.\nPlease wipe off your screen, keyboard and mouse.\nRemove all items from your back pocket, put pillow behind your back", "CodeHealthy", "Done!", "I don't care.");
+            score = CountScore(result1, score);
+
+            MessageBoxResult result2 = CustomMessageBox.ShowYesNo("Did you say hi to all your team members?", "CodeHealthy", "Yeah!", "I don't care about them.");
+            score = CountScore(result2, score);
+
+            MessageBoxResult result3 = CustomMessageBox.ShowYesNo("Did you have a sound sleep last night?", "CodeHealthy", "Yeah, I had.", "Sadly, No!");
+            score = CountScore(result3, score);
+
+            MessageBoxResult result4 = CustomMessageBox.ShowYesNo("Did you exercise today for atleast 30 minutes?", "CodeHealthy", "Ohh Yeah!", "No, I did not.");
+            score = CountScore(result4, score);
+
+            if (score < -2)
             {
-                case MessageBoxResult.Yes:
-                    //MessageBox.Show("Yep", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    //MessageBox.Show("I don't care", "CodeHealthy");
-                    score -= 1;
-                    break;
+                CustomMessageBox.Show("Your health score is very low. You seriously need to change your life style.", "CodeHealthy");
             }
-
-
-            MessageBoxResult result2 = MessageBox.Show("Remove all items from your back pocket, put pillow behind your back", "CodeHealthy", MessageBoxButton.YesNo);
-            switch (result2)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Cool! Just did that.", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    MessageBox.Show("I don't care", "CodeHealthy");
-                    score -= 1;
-                    break;
-            }
-
-            MessageBoxResult result3 = MessageBox.Show("Did you say hi to all your team members?", "CodeHealthy", MessageBoxButton.YesNo);
-            switch (result3)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Yep, just did that.", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    MessageBox.Show("I don't care", "CodeHealthy");
-                    MessageBox.Show("Saying Hi to your team mates help you build stronger relationship.", "CodeHealthy", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                    score -= 1;
-                    break;
-            }
-
-            MessageBoxHelper message4 = new MessageBoxHelper("Did you have a sound sleep last night?", "CodeHealthy", MessageBoxButton.YesNo, MessageBoxImage.Asterisk, score);
-            score = message4.DisplayMessageBox();
-            MessageBoxHelper message5 = new MessageBoxHelper("Did you exercise today for atleast 30 minutes?", "CodeHealthy", MessageBoxButton.YesNo, MessageBoxImage.Asterisk, score);
-            score = message5.DisplayMessageBox();
-            CustomMessageBox.ShowOK("Ready to start work?", "CodeHealthy", "Yeah!");
+            CustomMessageBox.Show("Let's start your day", "CodeHealthy");
 
 
 

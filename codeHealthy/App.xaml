@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:codeHealthy"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source = "C:\Users\yadav\Desktop\C_Sharp\code_practice\codeHealthy\codeHealthy\ResourceDictionaries\DictionaryWithBrush.xaml" />
+       
     </Application.Resources>
 </Application>

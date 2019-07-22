@@ -9,4 +9,10 @@
     <Grid>
         
     </Grid>
+    <Window.Resources>
+        <SolidColorBrush Color = "Blue" x:Key = "myBrush"></SolidColorBrush>
+    </Window.Resources>
+
+    
+
 </Window>
