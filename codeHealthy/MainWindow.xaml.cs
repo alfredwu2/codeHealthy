@@ -25,15 +25,18 @@ namespace codeHealthy
     public partial class MainWindow : Window
     {
         int score = 0;
+        int startMinute = 9 * 60 + 0;
+        int endMinute = 17 * 60 + 0;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            goodMorning();
 
 
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
 
@@ -50,7 +53,7 @@ namespace codeHealthy
             {
                 notifyIcon.Visible = true;
                 notifyIcon.Icon = SystemIcons.Application;
-                notifyIcon.BalloonTipText = "Radek app";
+                notifyIcon.BalloonTipText = "CodeHealthy";
                 notifyIcon.BalloonTipTitle = "Welcome Message";
                 notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
                 notifyIcon.ShowBalloonTip(3000);
@@ -71,7 +74,6 @@ namespace codeHealthy
             System.Windows.Forms.NotifyIcon notifyIcon = (System.Windows.Forms.NotifyIcon)sender;
             notifyIcon.Visible = false;
             this.ShowInTaskbar = true;
-
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -80,7 +82,31 @@ namespace codeHealthy
 
             //DateTime.Now.Minute = 
 
-            //goodMorning();
+            //MessageBox.Show(DateTime.Now.Hour.ToString());
+            //MessageBox.Show(DateTime.Now.Minute.ToString());
+
+            //int currentMinute = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+            //int elapsedMinutes = currentMinute - startMinute;
+
+            int currentMinute = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+            //int elapsedMinutes = currentMinute - startMinute;
+            int elapsedMinutes = currentMinute;
+
+
+
+            if (elapsedMinutes % 120 == 0)
+            {
+                ShortWalk();
+            }
+            else if (elapsedMinutes % 60 == 0)
+            {
+                WaterBodyStretchSip();
+            }
+            else if (elapsedMinutes % 30 == 0)
+            {
+                CloseEyes();
+            }
+
 
         }
 
@@ -127,8 +153,29 @@ namespace codeHealthy
                     score -= 1;
                     break;
             }
+        }
+
+
+        //After every 30 mins.
+        void CloseEyes()
+        {
+            MessageBoxResult result = CustomMessageBox.ShowYesNo("Time to rest for your eyes. Please close your eyes for 30 seconds.", "CodeHealthy", "Cool.", "I don't care.");
 
         }
+        //After 1 hour
+        void WaterBodyStretchSip()
+        {
+            MessageBoxResult result = CustomMessageBox.ShowYesNo("Please get up from your desk, have a sip of water and stretch your arms, legs, wrist and neck.", "CodeHealthy", "Cool.", "I don't care.");
+        }
+
+        //After every 2 hours
+        void ShortWalk()
+        {
+            MessageBoxResult result = CustomMessageBox.ShowYesNo("It's time to get a short walk outside. Please get up and walk outside for 10 minutes", "CodeHealthy", "Cool.", "I don't care.");
+        }
+
+
+
 
     }
 }
