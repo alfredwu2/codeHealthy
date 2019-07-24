@@ -54,7 +54,7 @@ namespace codeHealthy
                 notifyIcon.Visible = true;
                 notifyIcon.Icon = SystemIcons.Application;
                 notifyIcon.BalloonTipText = "CodeHealthy";
-                notifyIcon.BalloonTipTitle = "Welcome Message";
+                notifyIcon.BalloonTipTitle = "Don't ignore your health while coding!";
                 notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
                 notifyIcon.ShowBalloonTip(3000);
                 this.ShowInTaskbar = false;
@@ -78,7 +78,7 @@ namespace codeHealthy
 
         void timer_Tick(object sender, EventArgs e)
         {
-            Display.Text = "Score: " + score.ToString();
+            Display.Text = "\t\tWelcome to CodeHealthy!\n\tDon't ignore your health while coding.";
 
             //DateTime.Now.Minute = 
 
@@ -88,71 +88,80 @@ namespace codeHealthy
             //int currentMinute = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
             //int elapsedMinutes = currentMinute - startMinute;
 
-            int currentMinute = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+            //int currentMinute = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
             //int elapsedMinutes = currentMinute - startMinute;
+            //int elapsedMinutes = currentMinute;
+
+            int currentMinute = DateTime.Now.Minute * 60 + DateTime.Now.Second;
             int elapsedMinutes = currentMinute;
 
+            bool happened = false;
 
-
-            if (elapsedMinutes % 120 == 0)
+            if (currentMinute == endMinute)
+            {
+                CustomMessageBox.ShowOK("Time to go home. See you tomorrow.", "CodeHealthy", "Good Night.");
+                scoreCheck();
+            }
+            else if (elapsedMinutes % 120 == 0)
             {
                 ShortWalk();
+                scoreCheck();
             }
             else if (elapsedMinutes % 60 == 0)
             {
                 WaterBodyStretchSip();
+                scoreCheck();
             }
             else if (elapsedMinutes % 30 == 0)
             {
                 CloseEyes();
+                scoreCheck();
             }
+
 
 
         }
 
+        void scoreCheck()
+        {
+            if (score < -2)
+            {
+                CustomMessageBox.Show("Your health score is very low. You seriously need to change your life style.", "CodeHealthy", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (score > 5)
+            {
+                CustomMessageBox.Show("Great Job! Stay healthy.", "CodeHealthy", MessageBoxButton.OK);
+            }
+        }
+
+        int CountScore(MessageBoxResult result, int currScore)
+        {
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    currScore += 1;
+                    break;
+                case MessageBoxResult.No:
+                    currScore -= 1;
+                    break;
+            }
+            return currScore;
+        }
         void goodMorning()
         {
-            MessageBox.Show("Good Morning", "CodeHealthy", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            //CustomMessageBox.Show("Good Morning", "CodeHealthy");
 
-            MessageBoxResult result1 = CustomMessageBox.ShowYesNo("Please wipe off your screen, keyboard and mouse.", "CodeHealthy", "Cool! I just did that.", "I don't care.");
-            switch (result1)
-            {
-                case MessageBoxResult.Yes:
-                    //MessageBox.Show("Yep", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    //MessageBox.Show("I don't care", "CodeHealthy");
-                    score -= 1;
-                    break;
-            }
+            MessageBoxResult result1 = CustomMessageBox.ShowYesNo("\t\t\tGood Morning.\n  Please wipe off your screen, keyboard and mouse.\n  Remove all items from your back pocket, put pillow behind your back", "CodeHealthy", "Done!", "I don't care.");
+            score = CountScore(result1, score);
 
-            MessageBoxResult result2 = MessageBox.Show("Remove all items from your back pocket, put pillow behind your back", "CodeHealthy", MessageBoxButton.YesNo);
-            switch (result2)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Cool! Just did that.", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    MessageBox.Show("I don't care", "CodeHealthy");
-                    score -= 1;
-                    break;
-            }
+            MessageBoxResult result2 = CustomMessageBox.ShowYesNo("Did you say hi to all your team members?", "CodeHealthy", "Yeah!", "I don't care about them.");
+            score = CountScore(result2, score);
 
-            MessageBoxResult result3 = MessageBox.Show("Did you say hi to all your team members?", "CodeHealthy", MessageBoxButton.YesNo);
-            switch (result3)
-            {
-                case MessageBoxResult.Yes:
-                    MessageBox.Show("Yep, just did that.", "CodeHealthy");
-                    score += 1;
-                    break;
-                case MessageBoxResult.No:
-                    MessageBox.Show("I don't care", "CodeHealthy");
-                    MessageBox.Show("Saying Hi to your team mates help you build stronger relationship.", "CodeHealthy", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                    score -= 1;
-                    break;
-            }
+            MessageBoxResult result3 = CustomMessageBox.ShowYesNo("Did you have a sound sleep last night?", "CodeHealthy", "Yeah, I had.", "Sadly, No!");
+            score = CountScore(result3, score);
+
+            MessageBoxResult result4 = CustomMessageBox.ShowYesNo("Did you exercise today for atleast 30 minutes?", "CodeHealthy", "Ohh Yeah!", "No, I did not.");
+            score = CountScore(result4, score);
         }
 
 
@@ -160,18 +169,20 @@ namespace codeHealthy
         void CloseEyes()
         {
             MessageBoxResult result = CustomMessageBox.ShowYesNo("Time to rest for your eyes. Please close your eyes for 30 seconds.", "CodeHealthy", "Cool.", "I don't care.");
-
+            score = CountScore(result, score);
         }
         //After 1 hour
         void WaterBodyStretchSip()
         {
             MessageBoxResult result = CustomMessageBox.ShowYesNo("Please get up from your desk, have a sip of water and stretch your arms, legs, wrist and neck.", "CodeHealthy", "Cool.", "I don't care.");
+            score = CountScore(result, score);
         }
 
         //After every 2 hours
         void ShortWalk()
         {
             MessageBoxResult result = CustomMessageBox.ShowYesNo("It's time to get a short walk outside. Please get up and walk outside for 10 minutes", "CodeHealthy", "Cool.", "I don't care.");
+            score = CountScore(result, score);
         }
 
 
